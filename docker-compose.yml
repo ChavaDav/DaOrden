@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    container_name: daorden_app
+    ports:
+      - "3005:3005"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - db
+    restart: always
+
+networks:
+  db:
+    external: true

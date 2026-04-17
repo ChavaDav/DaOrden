@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaOrden - Login</title>
+    <link rel="stylesheet" href="/lista/style.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container login-container">
+        <h1>Acceso</h1>
+        
+        <div class="card">
+            <% if (error && error.length > 0) { %>
+                <div class="error-message">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/lista/login" method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="username">Usuario</label>
+                    <input class="form-control" type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Contraseña</label>
+                    <input class="form-control" type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button class="btn" type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
