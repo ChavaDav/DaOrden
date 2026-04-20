@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
 
 :root {
-    --bg-color: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --accent-color: #38bdf8;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --bg-color: #000000;
+    --card-bg: rgba(20, 20, 20, 0.8);
+    --accent-color: #D4AF37;
+    --text-primary: #D4AF37;
+    --text-secondary: #C5A028;
+    --border-color: rgba(212, 175, 55, 0.2);
 }
 
 body {
@@ -31,7 +31,7 @@ h1 {
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    background: linear-gradient(to right, #38bdf8, #818cf8);
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
