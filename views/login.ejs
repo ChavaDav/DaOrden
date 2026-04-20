@@ -3,95 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaOrden - Login</title>
+    <title>DaOrden - Login Gala</title>
     <link rel="stylesheet" href="/lista/style.css">
     <style>
+        body {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Outfit', sans-serif; /* Consistencia con la web */
+        }
+
+        /* 🛡️ FIX: Autocompletado */
+        input:-webkit-autofill {
+            -webkit-text-fill-color: var(--text-primary) !important;
+            -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset !important;
+        }
+
         .login-container {
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
         }
-        
-        .form-group {
+
+        .gala-logo {
+            width: 140px; /* Tamaño más elegante */
+            height: auto;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3));
+        }
+
+        h1 {
+            font-size: 2rem;
             margin-bottom: 1.5rem;
+            line-height: 1.2;
         }
-        
+
+        /* Tarjeta con espaciado homogéneo */
+        .card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 2.5rem; /* Padding generoso y moderno */
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Distribución del formulario */
+        .form-group {
+            margin-bottom: 1.8rem; /* Espacio entre campos */
+            text-align: left; /* Etiquetas siempre a la izquierda */
+        }
+
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.6rem;
+            color: var(--accent-color);
+            font-weight: 600;
         }
-        
+
         .form-control {
             width: 100%;
-            padding: 0.8rem;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 1rem; /* Padding interno cómodo */
+            border-radius: 12px;
+            color: white;
             font-family: inherit;
-            box-sizing: border-box;
+            font-size: 1rem;
+            box-sizing: border-box; /* Evita que el padding rompa el ancho */
+            transition: all 0.3s ease;
         }
-        
+
         .form-control:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            background: rgba(0, 0, 0, 0.5) !important;
         }
-        
+
         .btn {
             width: 100%;
-            padding: 0.8rem;
-            background: linear-gradient(to right, #BF953F, #AA771C);
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728);
+            color: #000;
             border: none;
-            border-radius: 8px;
-            color: black;
-            font-weight: 600;
+            padding: 1.1rem;
+            border-radius: 14px;
+            font-weight: 800;
             font-size: 1rem;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 0.5rem;
         }
-        
+
         .btn:hover {
-            opacity: 0.9;
-        }
-        
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            margin-bottom: 1.5rem;
-            text-align: center;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="container login-container">
-        <h1>Acceso a control de asistencia</h1>
-        
-        <div class="card">
-            <% if (error && error.length > 0) { %>
-                <div class="error-message">
-                    <%= error %>
-                </div>
-            <% } %>
-            
-            <form action="/lista/login" method="POST">
-                <div class="form-group">
-                    <label class="form-label" for="username">Usuario</label>
-                    <input class="form-control" type="text" id="username" name="username" required autocomplete="username">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="password">Contraseña</label>
-                    <input class="form-control" type="password" id="password" name="password" required autocomplete="current-password">
-                </div>
-                
-                <button class="btn" type="submit">Iniciar Sesión</button>
-            </form>
-        </div>
+<div class="container login-container">
+
+    <div class="logo-wrapper">
+        <img src="/logo-cdo.png" alt="Logo Códigos de Oro" class="gala-logo">
     </div>
+
+    <h1>Acceso a control de asistencia</h1>
+
+    <div class="divider"></div>
+
+    <div class="card">
+        <% if (error && error.length > 0) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/lista/login" method="POST">
+            <div class="form-group">
+                <label class="form-label" for="username">Usuario</label>
+                <input class="form-control" type="text" id="username" name="username" required placeholder="Introduce tu usuario">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <input class="form-control" type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+
+            <button class="btn" type="submit">Acceder</button>
+        </form>
+    </div>
+
+    <p style="margin-top: 2rem; font-size: 0.7rem; color: var(--text-secondary); letter-spacing: 1px;">
+        DA-ETSISI • UPM
+    </p>
+</div>
 </body>
 </html>
