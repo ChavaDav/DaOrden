@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
 
 :root {
-    --bg-color: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --accent-color: #38bdf8;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --bg-color: #000000;
+    --card-bg: rgba(20, 20, 20, 0.8);
+    --accent-color: #D4AF37;
+    --text-primary: #D4AF37;
+    --text-secondary: #C5A028;
+    --border-color: rgba(212, 175, 55, 0.2);
 }
 
 body {
@@ -24,14 +24,13 @@ body {
 .container {
     max-width: 800px;
     width: 100%;
-    animation: fadeIn 0.8s ease-out;
 }
 
 h1 {
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    background: linear-gradient(to right, #38bdf8, #818cf8);
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
@@ -43,7 +42,8 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
 .order-list {
@@ -102,6 +102,15 @@ h1 {
     background: rgba(16, 185, 129, 0.1);
     color: #10b981;
     border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+#attendee-search:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#attendee-search::placeholder {
+    color: rgba(212, 175, 55, 0.5);
 }
 
 @keyframes fadeIn {

@@ -226,6 +226,18 @@
                 <button type="submit" class="add-btn">+ Añadir</button>
             </form>
         </div>
+
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="add-form"> <div style="position: relative; flex-grow: 1; display: flex; align-items: center;">
+                    <span style="position: absolute; left: 15px; color: var(--accent-color); font-size: 1.1rem; pointer-events: none;">🔍</span>
+                    <input type="text"
+                           id="attendee-search"
+                           class="add-input"
+                           placeholder="Buscar asistente"
+                           onkeyup="filterList()"
+                           style="padding-left: 45px; width: 100%;"> </div>
+            </div>
+        </div>
         
         <div class="card">
             <% if (people.length === 0) { %>
@@ -305,6 +317,21 @@
                 statusLabel.innerText = originalText;
                 document.getElementById(`item-${id}`).querySelector('input[type="checkbox"]').checked = !isChecked; // Revertir checkbox
             }
+        }
+
+        function filterList() {
+            const input = document.getElementById('attendee-search');
+            const filter = input.value.toLowerCase();
+            const listItems = document.querySelectorAll('.order-item');
+
+            listItems.forEach(item => {
+                const name = item.querySelector('.person-name').innerText.toLowerCase();
+                if (name.includes(filter)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
         }
 
         async function deletePerson(id, name) {
