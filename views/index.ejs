@@ -286,7 +286,92 @@
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        const socket = io();
+
+        socket.on('presence-updated', ({ id, present }) => {
+            const statusLabel = document.getElementById(`status-${id}`);
+            const checkbox = document.querySelector(`#item-${id} input[type="checkbox"]`);
+            const attendeesCountEl = document.getElementById('attendees-count');
+            
+            if (statusLabel && checkbox) {
+                // Solo si el estado real es diferente al que tenemos (para no interferir con acciones locales inmediatas)
+                if (checkbox.checked !== present) {
+                    let currentCount = parseInt(attendeesCountEl.innerText);
+                    attendeesCountEl.innerText = present ? currentCount + 1 : currentCount - 1;
+                    checkbox.checked = present;
+                    statusLabel.innerText = present ? 'Presente' : 'Ausente';
+                    statusLabel.style.color = present ? '#10b981' : '#94a3b8';
+                }
+            }
+        });
+
+        socket.on('person-added', (person) => {
+            const list = document.querySelector('.order-list');
+            if (!list) {
+                // Si la lista estaba vacía y no había <ul>, recargamos para simplificar o la creamos
+                window.location.reload();
+                return;
+            }
+
+            // Crear el nuevo elemento
+            const li = document.createElement('li');
+            li.className = 'order-item';
+            li.id = `item-${person.id}`;
+            li.innerHTML = `
+                <div class="order-info">
+                    <span class="person-name">${person.name}</span>
+                    <span id="status-${person.id}" class="status-text" style="color: ${person.present ? '#10b981' : '#94a3b8'}">
+                        ${person.present ? 'Presente' : 'Ausente'}
+                    </span>
+                </div>
+                <div class="controls-wrapper">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" onchange="togglePresence(${person.id}, this.checked)" ${person.present ? 'checked' : ''}>
+                        <span class="checkmark"></span>
+                    </label>
+                    <button class="btn-delete" onclick="deletePerson(${person.id}, '${person.name}')" title="Eliminar persona">
+                        &times;
+                    </button>
+                </div>
+            `;
+
+            // Insertar ordenado alfabéticamente
+            const items = Array.from(list.querySelectorAll('.order-item'));
+            const insertBeforeItem = items.find(item => {
+                const name = item.querySelector('.person-name').innerText.toLowerCase();
+                return name > person.name.toLowerCase();
+            });
+
+            if (insertBeforeItem) {
+                list.insertBefore(li, insertBeforeItem);
+            } else {
+                list.appendChild(li);
+            }
+
+            // Actualizar contador si viene presente (aunque por defecto es false)
+            if (person.present) {
+                const attendeesCountEl = document.getElementById('attendees-count');
+                attendeesCountEl.innerText = parseInt(attendeesCountEl.innerText) + 1;
+            }
+            
+            // Re-aplicar filtro si hay algo escrito en el buscador
+            filterList();
+        });
+
+        socket.on('person-deleted', (id) => {
+            const item = document.getElementById(`item-${id}`);
+            if (item) {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                if (checkbox && checkbox.checked) {
+                    const attendeesCountEl = document.getElementById('attendees-count');
+                    attendeesCountEl.innerText = parseInt(attendeesCountEl.innerText) - 1;
+                }
+                item.remove();
+            }
+        });
+
         async function togglePresence(id, isChecked) {
             const statusLabel = document.getElementById(`status-${id}`);
             const attendeesCountEl = document.getElementById('attendees-count');
@@ -309,6 +394,8 @@
                 
                 const result = await response.json();
                 if (result.success) {
+                    // El evento de Socket.io se encargará de confirmar el estado final si fuera necesario,
+                    // pero aquí ya hemos actualizado la UI optimísticamente.
                     statusLabel.innerText = isChecked ? 'Presente' : 'Ausente';
                     statusLabel.style.color = isChecked ? '#10b981' : '#94a3b8';
                 } else {
@@ -356,8 +443,8 @@
                 
                 const result = await response.json();
                 if (result.success) {
-                    // Refrescar página para recalcular conteos
-                    window.location.reload();
+                    // No hace falta recargar, Socket.io eliminará el elemento de la lista
+                    // window.location.reload(); 
                 } else {
                     alert('Error al eliminar: ' + (result.error || 'Desconocido'));
                 }

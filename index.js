@@ -12,6 +12,10 @@ const sequelize = require("./db");
 const Person = require("./models/Person");
 
 const app = express();
+const http = require('http');
+const { Server } = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server);
 const PORT = process.env.PORT || 3005;
 const ENV = process.env.NODE_ENV || 'development';
 
@@ -24,9 +28,12 @@ app.use(helmet({
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
             scriptSrcAttr: ["'unsafe-inline'"], // Permite onchange, onclick en atributos HTML
-            imgSrc: ["'self'"]
+            connectSrc: ["'self'", "ws:", "wss:"], // Permitir WebSockets
+            imgSrc: ["'self'", "data:"],           // Permitir imágenes base64 si las hay
+            upgradeInsecureRequests: null,         // DESACTIVAR: Evita que el móvil intente usar HTTPS en local
         }
-    }
+    },
+    crossOriginEmbedderPolicy: false, // Desactivar para evitar problemas con recursos externos como fuentes
 }));
 app.disable("x-powered-by");
 
@@ -162,8 +169,10 @@ listaRouter.post(
             return res.redirect("/lista");
         }
         try {
-            await Person.create({ name: req.body.name, present: false });
+            const newPerson = await Person.create({ name: req.body.name, present: false });
             req.flash("success", `"${req.body.name}" añadido correctamente.`);
+            // Emitir evento Socket.io
+            io.emit('person-added', newPerson);
         } catch (err) {
             console.error("Error añadiendo persona:", err.message);
             req.flash("error_add", "Error al guardar en la base de datos.");
@@ -195,6 +204,10 @@ listaRouter.post(
                 const exist = await Person.count({ where: { id } });
                 if (exist === 0) return res.status(404).json({ success: false, error: "Persona no encontrada" });
             }
+            
+            // Emitir evento Socket.io
+            io.emit('presence-updated', { id, present });
+            
             res.json({ success: true });
         } catch (error) {
             console.error("Error al actualizar presencia:", error.message);
@@ -216,6 +229,10 @@ listaRouter.delete(
         try {
             const deleted = await Person.destroy({ where: { id } });
             if (deleted === 0) return res.status(404).json({ success: false, error: "Persona no encontrada" });
+            
+            // Emitir evento Socket.io
+            io.emit('person-deleted', id);
+            
             res.json({ success: true });
         } catch (error) {
             console.error("Error al eliminar persona:", error.message);
@@ -261,8 +278,8 @@ async function start() {
         if (ENV === 'production') process.exit(1);
     }
 
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log(`Servidor iniciado en puerto ${PORT} en modo ${ENV}`);
+    server.listen(PORT, '0.0.0.0', () => {
+        console.log(`Servidor iniciado en puerto ${PORT} en modo ${ENV} con Socket.io`);
     });
 }
 
