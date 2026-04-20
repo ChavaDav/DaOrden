@@ -24,7 +24,6 @@ body {
 .container {
     max-width: 800px;
     width: 100%;
-    animation: fadeIn 0.8s ease-out;
 }
 
 h1 {
@@ -43,7 +42,8 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
 .order-list {
