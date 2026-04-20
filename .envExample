@@ -1,0 +1,23 @@
+# Configuración del Servidor
+PORT=3005
+NODE_ENV=development
+
+# Seguridad - ¡Cambia esto en producción!
+SESSION_SECRET=da_orden_secret_key_8822
+
+# Configuración de Base de Datos (SQLite por defecto)
+DB_DIALECT=sqlite
+DB_STORAGE=database.sqlite
+
+# Configuración para otras DBs (MySQL, MariaDB, etc.)
+# DB_DIALECT=mysql
+# DB_HOST=localhost
+# DB_PORT=3306
+# DB_NAME=daorden_db
+# DB_USER=root
+# DB_PASS=secret
+
+# Usuarios de Administración (AUTH_USER_n y AUTH_PASS_n como hash de bcrypt)
+# El usuario por defecto es 'admin' con contraseña 'admin123'
+AUTH_USER_1=admin
+AUTH_PASS_1=$$2b$$10$$OmP1pmWfxi5p5acKBA1fIONb4SIWXxgzfT0tozOn0.oCaBG7p8Tqy

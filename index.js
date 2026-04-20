@@ -101,9 +101,19 @@ listaRouter.post("/login", loginLimiter, async (req, res) => {
 
     // Cargamos usuarios del .env
     const users = loadUsersFromEnv();
+    console.log("Usuarios cargados:", users.map(u => u.username));
     const user = users.find(u => u.username === username.trim());
+    console.log(`Intentando login para: "${username}"`);
+    if (!user) {
+        console.log("Usuario no encontrado en .env");
+        req.flash("error", "Usuario o contraseña incorrectos.");
+        return res.redirect("/lista/login");
+    }
 
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    console.log("¿Coincide la contraseña?:", isMatch);
+
+    if (!isMatch) {
         req.flash("error", "Usuario o contraseña incorrectos.");
         return res.redirect("/lista/login");
     }
